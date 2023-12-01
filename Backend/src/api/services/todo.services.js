@@ -10,10 +10,39 @@ const findAll = async (params) => {
     filterOptions.where.category_id = category;
   }
 
-  const todo = await prisma.category.findMany(filterOptions);
+  const todo = await prisma.todo.findMany(filterOptions);
+  return todo;
+};
+
+const findOne = async (pathParams) => {
+  const { id } = pathParams;
+  const todo = await prisma.todo.findUnique({
+    where: {
+      id: +id,
+    },
+  });
+  return todo;
+};
+
+const create = async (params) => {
+  let { title, body, due_date, reminder_at, category_id, user_id } = params;
+
+  const todo = await prisma.todo.create({
+    data: {
+      title,
+      body,
+      due_date,
+      reminder_at,
+      category_id,
+      user_id,
+    },
+  });
+
   return todo;
 };
 
 module.exports = {
   findAll,
+  findOne,
+  create,
 };

@@ -13,6 +13,7 @@
   },
   "scripts": {
     "dev": "nodemon src/app.js",
-    "migrate": "prisma migrate dev"
+    "migrate": "prisma migrate dev",
+    "reset": "prisma migrate reset"
   }
 }

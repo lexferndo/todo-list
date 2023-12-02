@@ -8,38 +8,41 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   first_name String
-  last_name String
-  username String @unique
-  email String @unique
-  password String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  photo String?
-  todo Todo[]
+  last_name  String
+  username   String     @unique
+  email      String     @unique
+  password   String
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
+  photo      String?
+  categories Category[]
+  todos      Todo[]
 }
 
 model Category {
-  id Int @id @default(autoincrement())
-  name String @unique
-  todo Todo[]
+  id      Int    @id @default(autoincrement())
+  name    String
+  user_id Int
+  user    User   @relation(fields: [user_id], references: [id])
+  todos   Todo[]
 }
 
-model Todo{
-  id Int @id @default(autoincrement())
-  title String
-  body String
-  due_date DateTime
+model Todo {
+  id          Int      @id @default(autoincrement())
+  title       String
+  body        String
+  due_date    DateTime
   reminder_at DateTime
   category_id Int
-  category Category @relation(fields: [category_id], references: [id])
-  user_id Int
-  user User @relation(fields: [user_id], references: [id])
-
+  category    Category @relation(fields: [category_id], references: [id])
+  user_id     Int
+  user        User     @relation(fields: [user_id], references: [id])
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  status     Status   @default(onprogress)
 }
 
 enum Status {

@@ -1,14 +1,18 @@
-const prisma = require("../../constants/prisma");
+const prisma = require("../../lib/prisma");
 
 const findAll = async (params) => {
   const filterOptions = {
     where: {},
   };
 
-  const { name } = params;
+  const { name, user_id } = params;
   if (name) {
     filterOptions.where.name = name;
   }
+  if (user_id) {
+    filterOptions.where.user_id = user_id;
+  }
+
   const categories = await prisma.category.findMany(filterOptions);
   return categories;
 };
@@ -25,10 +29,11 @@ const findOne = async (pathParams) => {
 };
 
 const create = async (params) => {
-  const { name } = params;
+  const { name, user_id } = params;
   const categories = prisma.category.create({
     data: {
       name,
+      user_id,
     },
   });
 

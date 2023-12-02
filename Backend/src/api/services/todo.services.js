@@ -1,16 +1,11 @@
-const prisma = require("../../constants/prisma");
+const prisma = require("../../lib/prisma");
 
-const findAll = async (params) => {
-  const filterOptions = {
-    where: {},
-  };
-
-  const { category } = params;
-  if (category) {
-    filterOptions.where.category_id = category;
-  }
-
-  const todo = await prisma.todo.findMany(filterOptions);
+const findAll = async (user_id) => {
+  const todo = await prisma.todo.findMany({
+    where: {
+      user_id: user_id,
+    },
+  });
   return todo;
 };
 
@@ -41,8 +36,41 @@ const create = async (params) => {
   return todo;
 };
 
+const update = async (pathParams, params) => {
+  const { id } = pathParams;
+  const { title, body, due_date, reminder_at, category_id } = params;
+
+  const todo = await prisma.todo.update({
+    where: {
+      id: +id,
+    },
+    data: {
+      title,
+      body,
+      due_date,
+      reminder_at,
+      category_id,
+    },
+  });
+  return todo;
+};
+
+const destroy = async (pathParams) => {
+  const { id } = pathParams;
+
+  const todo = await prisma.todo.delete({
+    where: {
+      id: +id,
+    },
+  });
+
+  return todo;
+};
+
 module.exports = {
   findAll,
   findOne,
   create,
+  update,
+  destroy,
 };

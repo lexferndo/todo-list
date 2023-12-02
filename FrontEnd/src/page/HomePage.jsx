@@ -3,10 +3,11 @@ import ListTodo from "../components/ListTodo";
 import { getAllTodoList } from "../utils/local-data";
 import { showFormattedDate } from "../utils";
 import { DetailContext } from "../context/DetailContext";
+import Modal from "../components/Modal";
 
 const HomePage = () => {
   const [todoList, setTodoList] = useState([]);
-  const { openDetail, setOpenDetail } = useContext(DetailContext);
+  const { setOpenDetail } = useContext(DetailContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,21 +34,17 @@ const HomePage = () => {
             <input
               type="text"
               placeholder="Search"
-              className="p-2 rounded-md w-full sm:w-1/4"
+              className="p-2 rounded-md w-full sm:w-2/6"
             />
           </div>
         </section>
 
         <section className="container mx-auto">
           <ListTodo todo={todoList} handleOpen={handleClickOpenDetail} />
-          <div className="flex justify-end">
-            <button
-              className={`bottom-5 px-6 py-3 rounded-full bg-primary text-4xl text-logo bg-opacity-90 border-none hover:bg-opacity-100 hover:font-medium ${
-                openDetail ? "hidden" : "fixed"
-              }`}>
-              +
-            </button>
-          </div>
+        </section>
+
+        <section>
+          <Modal />
         </section>
       </div>
     </div>
@@ -55,7 +52,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-// ${
-//   openDetail && window.innerWidth <= 1000 ? "hidden" : "flex"
-// }

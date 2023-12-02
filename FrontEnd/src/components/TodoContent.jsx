@@ -6,11 +6,6 @@ import { IoCalendarOutline } from "react-icons/io5";
 const TodoContent = ({ title, reminderAt, category, handleOpen }) => {
   return (
     <div className="flex bg-white rounded-md p-5 shadow-md gap-x-5 items-center shadow-primary">
-      <input
-        type="checkbox"
-        className="scale-125 accent-logo focus:ring-primary"
-      />
-
       <div className="flex flex-col gap-y-1">
         <button
           className="text-primary text-xl font-semibold text-left bg-transparent w-fit hover:underline"

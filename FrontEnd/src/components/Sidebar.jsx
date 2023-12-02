@@ -5,6 +5,8 @@ import { TfiWrite } from "react-icons/tfi";
 import { PiArchiveDuotone } from "react-icons/pi";
 import { FaListCheck, FaList } from "react-icons/fa6";
 import { GoChecklist } from "react-icons/go";
+import { VscAccount } from "react-icons/vsc";
+import { SlLogout } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import DetailTask from "./DetailTask";
 import { DetailContext } from "../context/DetailContext";
@@ -14,21 +16,31 @@ const ListMenu = [
     name: "Today",
     logo: <TfiWrite className="text-xl fill-logo" />,
     link: "/",
+    menu: true,
   },
   {
     name: "All Todo",
     logo: <FaList className="text-xl fill-logo" />,
     link: "/alltodo",
+    menu: true,
   },
   {
     name: "Completed",
     logo: <FaListCheck className="text-xl fill-logo" />,
     link: "/completed",
+    menu: true,
   },
   {
     name: "Archived",
     logo: <PiArchiveDuotone className="text-xl fill-logo" />,
     link: "/archived",
+    menu: true,
+  },
+  {
+    name: "Profile",
+    logo: <VscAccount className="text-xl text-logo" />,
+    link: "/profile",
+    menu: false,
   },
 ];
 
@@ -37,10 +49,6 @@ const Sidebar = ({ children }) => {
   const [menuActive, setMenuActive] = useState(0);
 
   const { openDetail, setOpenDetail } = useContext(DetailContext);
-
-  {
-    console.log(openDetail);
-  }
 
   const handleClickCloseDetail = () => {
     setOpenDetail(false);
@@ -59,9 +67,9 @@ const Sidebar = ({ children }) => {
   }, [menuActive]);
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-screen">
       <div
-        className={`bg-primary h-screen relative px-5 pt-8 transition-all duration-500 ${
+        className={`bg-primary flex flex-col h-screen relative px-5 pt-8 transition-all duration-500 ${
           sidebarOpen && window.innerWidth <= 500
             ? "w-screen"
             : sidebarOpen && window.innerWidth >= 500
@@ -90,27 +98,67 @@ const Sidebar = ({ children }) => {
           </h1>
         </div>
 
-        <ul className="grid gap-7 pt-10">
+        <ul className="flex-1 flex flex-col gap-7 pt-10">
           {ListMenu.map((value, index) => {
-            return (
-              <li key={index}>
-                <Link
-                  to={value.link}
-                  className={`flex items-center gap-x-2 p-2 cursor-pointer rounded-md bg-opacity-50 hover:bg-white hover:bg-opacity-50 ${
-                    menuActive === index ? "bg-white " : "bg-transparent"
-                  }`}
-                  onClick={() => setMenuActive(index)}>
-                  {value.logo}
-                  <span
-                    className={`text-lg text-secondary font-normal origin-left duration-200 hover:font-semibold ${
-                      !sidebarOpen && "hidden"
-                    }`}>
-                    {value.name}
-                  </span>
-                </Link>
-              </li>
-            );
+            if (value.menu === true) {
+              return (
+                <li key={index}>
+                  <Link
+                    to={value.link}
+                    className={`flex items-center gap-x-2 p-2 cursor-pointer rounded-md bg-opacity-50 hover:bg-white hover:bg-opacity-50 ${
+                      menuActive === index ? "bg-white " : "bg-transparent"
+                    }`}
+                    onClick={() => setMenuActive(index)}>
+                    {value.logo}
+                    <span
+                      className={`text-lg text-secondary font-normal origin-left duration-200 hover:font-semibold ${
+                        !sidebarOpen && "hidden"
+                      }`}>
+                      {value.name}
+                    </span>
+                  </Link>
+                </li>
+              );
+            }
           })}
+        </ul>
+
+        <ul className="flex flex-col gap-3 pb-5">
+          {ListMenu.map((value, index) => {
+            if (value.menu === false) {
+              return (
+                <li key={index}>
+                  <Link
+                    to={value.link}
+                    className={`flex items-center gap-x-2 p-2 cursor-pointer rounded-md bg-opacity-50 hover:bg-white hover:bg-opacity-50 ${
+                      menuActive === index ? "bg-white " : "bg-transparent"
+                    }`}
+                    onClick={() => setMenuActive(index)}>
+                    {value.logo}
+                    <span
+                      className={`text-lg text-secondary font-normal origin-left duration-200 hover:font-semibold ${
+                        !sidebarOpen && "hidden"
+                      }`}>
+                      {value.name}
+                    </span>
+                  </Link>
+                </li>
+              );
+            }
+          })}
+
+          <li>
+            <button
+              className={`flex w-full items-center gap-x-2 p-2 cursor-pointer rounded-md bg-opacity-50 hover:bg-white hover:bg-opacity-50`}>
+              <SlLogout className="text-xl fill-logo" />
+              <span
+                className={`text-lg text-secondary font-normal origin-left duration-200 hover:font-semibold ${
+                  !sidebarOpen && "hidden"
+                }`}>
+                Logout
+              </span>
+            </button>
+          </li>
         </ul>
       </div>
 
